@@ -2129,6 +2129,36 @@
 
 
     /**
+     * Returns a new list containing only those items that match a given predicate function.
+     * The predicate function is passed one argument: *(value)*.
+     *
+     * @func
+     * @memberOf R
+     * @category core
+     * @category Object
+     * @sig (a -> Boolean) -> {a} -> {a}
+     * @param {Function} fn The function called per iteration.
+     * @param {Object} The collection to iterate over.
+     * @return {Object} The new filtered object.
+     * @example
+     *
+     *      var isEven = function(x) {
+     *        return x % 2 === 0;
+     *      };
+     *      R.filter(isEven, {key1: 1, key2: 2, key3: 3, key4: 4}); //=> {key2: 2, key4: 4}
+     */
+    var filterObj = function R.curry(function(filter, obj) {
+        return R.reduce(function(acc, key) {
+            if (filter(obj[key], key)) {
+                acc[key] = obj[key];
+            }
+            return acc;
+        }, {}, R.keys(obj));
+    });
+    R.filterObj = filterObj;
+
+
+    /**
      * Similar to `filter`, except that it keeps only values for which the given predicate
      * function returns falsy. The predicate function is passed one argument: *(value)*.
      *
